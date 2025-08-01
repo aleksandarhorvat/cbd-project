@@ -77,8 +77,7 @@ The application will be accessible at `http://localhost:8765` (API Gateway endpo
 
 ## Database Model
 
-<img width="720" height="407" alt="image" src="https://github.com/user-attachments/assets/a0e30377-5fef-4c97-b2d7-602e5fb771d2" />
-
+![Database Model](./resources/model.png "Database Model")
 
 ## Database Setup
 
