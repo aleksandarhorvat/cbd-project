@@ -5,15 +5,19 @@ import lombok.RequiredArgsConstructor;
 import org.example.libraryservice.dto.BookDto;
 import org.example.libraryservice.dto.CopyDto;
 import org.example.libraryservice.dto.UserDto;
+import org.example.libraryservice.error.BookNotAvailableException;
+import org.example.libraryservice.error.BookNotFoundException;
+import org.example.libraryservice.error.CopyNotFoundException;
+import org.example.libraryservice.error.UserNotFoundException;
 import org.example.libraryservice.model.*;
 import org.example.libraryservice.proxy.BookProxy;
 import org.example.libraryservice.proxy.UserProxy;
 import org.example.libraryservice.repository.LoanRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class LibraryService {
     private final BookProxy bookProxy;
     private final UserProxy userProxy;
     private final LoanRepository loanRepository;
+    private final Clock clock;
 
     public List<BookDto> getAllBooks() {
         return bookProxy.getAllBooks();
@@ -31,29 +36,48 @@ public class LibraryService {
         try {
             return bookProxy.getBookByTitle(title);
         } catch (FeignException.NotFound e) {
-            throw new NoSuchElementException("Book not found with title: " + title);
+            throw new BookNotFoundException("Book with title '" + title + "' not found");
         }
     }
 
     public Loan loanBook(String title, Integer userId) {
-        BookDto book = getBookByTitle(title);
+        BookDto book;
         UserDto user;
+
+        try {
+            book = bookProxy.getBookByTitle(title);
+        } catch (FeignException.NotFound e) {
+            throw new BookNotFoundException("Book with title '" + title + "' not found");
+        }
+
         try {
             user = userProxy.getUser(userId);
         } catch (FeignException.NotFound e) {
-            throw new NoSuchElementException("User with id " + userId + " not found in user-service");
+            throw new UserNotFoundException("User not found with ID: " + userId);
         }
+
         List<CopyDto> copies = bookProxy.getCopiesOfBook(book.getId());
+        LocalDate now = LocalDate.now(clock);
+
         for (CopyDto copy : copies) {
             if (isCopyAvailable(copy.getId())) {
-                Loan loan = new Loan(new LoanId(user.getId(), copy.getId()), LocalDate.now(), LocalDate.now().plusWeeks(1));
+                Loan loan = new Loan(
+                    new LoanId(user.getId(), copy.getId()),
+                    now,
+                    now.plusWeeks(1)
+                );
                 return loanRepository.save(loan);
             }
         }
-        throw new RuntimeException("No available copies for book: " + title);
+        throw new BookNotAvailableException("No available copies for book: '" + title + "'");
     }
 
-    private boolean isCopyAvailable(Integer copyId) {
-        return loanRepository.findById_CopyId(copyId).isEmpty();
+    public boolean isCopyAvailable(Integer copyId) {
+        try {
+            bookProxy.getCopyById(copyId);
+            return loanRepository.findById_CopyId(copyId).isEmpty();
+        } catch (FeignException.NotFound e) {
+            throw new CopyNotFoundException("Copy not found with ID: " + copyId);
+        }
     }
 }

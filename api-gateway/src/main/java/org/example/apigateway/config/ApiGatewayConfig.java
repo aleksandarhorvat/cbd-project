@@ -11,8 +11,12 @@ public class ApiGatewayConfig {
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
 
-                .route("user-service", r -> r.path("/user/**")
+                .route("user-service", r -> r.path("/users/**")
                         .uri("lb://user-service"))
+                .route("book-service", r -> r.path("/books/**")
+                        .uri("lb://book-service"))
+                .route("library-service", r -> r.path("/library/**")
+                        .uri("lb://library-service"))
                 .build();
     }
 }

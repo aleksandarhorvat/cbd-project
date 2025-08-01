@@ -2,6 +2,7 @@ package org.example.bookservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.error.BookNotFoundException;
+import org.example.bookservice.error.CopyNotFoundException;
 import org.example.bookservice.model.Book;
 import org.example.bookservice.model.Copy;
 import org.example.bookservice.repository.BookRepository;
@@ -22,10 +23,19 @@ public class BookService {
     }
 
     public Book getBookByTitle(String title) {
-        return bookRepository.getBookByTitle(title).orElseThrow(() -> new BookNotFoundException("Performance with id " + title + " does not exist"));
+        return bookRepository.getBookByTitle(title)
+                .orElseThrow(() -> new BookNotFoundException("Book with title '" + title + "' not found"));
     }
 
     public List<Copy> getCopiesOfBook(Integer bookId) {
+        if (!bookRepository.existsById(bookId)) {
+            throw new BookNotFoundException("Book with id " + bookId + " not found");
+        }
         return copyRepository.getCopiesByBook(bookId);
+    }
+
+    public Copy getCopyById(Integer copyId) {
+        return copyRepository.findById(copyId)
+                .orElseThrow(() -> new CopyNotFoundException("Copy with id " + copyId + " not found"));
     }
 }

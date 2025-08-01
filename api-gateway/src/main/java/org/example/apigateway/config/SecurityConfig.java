@@ -19,9 +19,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .addFilterAt(authFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/user/register", "/user/login").permitAll()
-                        .pathMatchers("/user/admin/**").hasRole("ADMIN")
-                        .pathMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .pathMatchers("/users/register", "/users/login").permitAll()
+                        .pathMatchers("/users/admin/**", "/library/admin/**", "/books/**").hasRole("ADMIN")
+                        .pathMatchers("/users/**", "/library/**").hasAnyRole("USER", "ADMIN")
                         .anyExchange().denyAll()
                 )
                 .build();
