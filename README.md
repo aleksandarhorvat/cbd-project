@@ -95,6 +95,36 @@ docker compose down
 - Book Service: `http://localhost:8001`
 - Library Service: `http://localhost:8002`
 
+## API Gateway Security
+
+The API Gateway uses an API key-based authentication mechanism. All requests (except registration and login) **must include an `x-api-key` HTTP header**.
+
+### API Keys
+| Role  | API Key       |
+|-------|----------------|
+| USER  | `userKey123`   |
+| ADMIN | `adminKey123`  |
+
+### Open Endpoints (no API key required)
+- `POST /users/register`
+- `POST /users/login`
+
+### Protected Endpoints
+
+> The following routes **require the `x-api-key` header**:
+
+#### Admin-only access (`x-api-key: adminKey123`)
+- `/users/admin/**`
+- `/library/admin/**`
+- `/books/**`
+
+#### User or Admin access (`x-api-key: userKey123` or `adminKey123`)
+- `/users/**` (excluding `/register` and `/login`)
+- `/library/**` (excluding `/admin/**`)
+
+### Denied Endpoints
+Any other endpoints not listed above will be denied with a `403 Forbidden` response.
+
 ## Features
 - Centralized configuration management
 - Service discovery and registration
