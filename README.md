@@ -28,31 +28,59 @@ The project consists of the following microservices:
 
 ## Getting Started
 
-### Running the Application
+### Running the Application (Locally with Maven)
 
 1. Start the Config Server:
 ```bash
-cd config-server mvn spring-boot:run
+cd config-server
+mvn spring-boot:run
 ``` 
 
 2. Start the Eureka Server:
 ```bash
-cd eureka-server mvn spring-boot:run
+cd eureka-server
+mvn spring-boot:run
 ``` 
 
 3. Start the core services:
 ```bash
-cd book-service mvn spring-boot:run
-cd user-service mvn spring-boot:run
-cd library-service mvn spring-boot:run
+cd book-service
+mvn spring-boot:run
+
+cd user-service
+mvn spring-boot:run
+
+cd library-service
+mvn spring-boot:run
 ``` 
 
 4. Start the API Gateway:
 ```bash
-cd api-gateway mvn spring-boot:run
+cd api-gateway
+mvn spring-boot:run
 ``` 
 
 The application will be accessible at `http://localhost:8765` (API Gateway endpoint)
+
+### Running with Docker
+If you prefer using Docker, you can pull prebuilt images from Docker Hub:
+#### Docker Images:
+- Eureka Server: [`aleksandarhorvat/eureka-server`](https://hub.docker.com/r/aleksandarhorvat/eureka-server)
+- User Service: [`aleksandarhorvat/user-service`](https://hub.docker.com/r/aleksandarhorvat/user-service)
+- Book Service: [`aleksandarhorvat/book-service`](https://hub.docker.com/r/aleksandarhorvat/book-service)
+- Library Service: [`aleksandarhorvat/library-service`](https://hub.docker.com/r/aleksandarhorvat/library-service)
+- API Gateway: [`aleksandarhorvat/api-gateway`](https://hub.docker.com/r/aleksandarhorvat/api-gateway)
+#### Steps:
+1. Make sure Docker is installed and running.
+2. Navigate to the `resources` folder where the `docker-compose.yml` file is located.
+3. Start all services using:
+```bash
+docker compose up
+```
+4. To stop the running containers:
+```bash
+docker compose down
+```
 
 ## Service Endpoints
 
