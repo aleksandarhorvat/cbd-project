@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.bookservice.model.Book;
 import org.example.bookservice.model.Copy;
 import org.example.bookservice.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,8 @@ import java.util.List;
 @RequestMapping("/books")
 @Validated
 public class BookController {
-
+	
+	@Autowired
     private final BookService bookService;
 
     @GetMapping
