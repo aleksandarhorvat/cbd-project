@@ -7,7 +7,6 @@ import org.example.bookservice.model.Book;
 import org.example.bookservice.model.Copy;
 import org.example.bookservice.repository.BookRepository;
 import org.example.bookservice.repository.CopyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +14,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BookService {
-	
-	@Autowired
+
     private final BookRepository bookRepository;
-	@Autowired
     private final CopyRepository copyRepository;
 
     public List<Book> getAllBooks() {

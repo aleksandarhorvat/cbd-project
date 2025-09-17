@@ -7,18 +7,14 @@ import org.example.userservice.model.User;
 import org.example.userservice.dto.UserDto;
 import org.example.userservice.repository.RoleRepository;
 import org.example.userservice.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-	@Autowired
     private final UserRepository userRepository;
-	@Autowired
     private final RoleRepository roleRepository;
-	@Autowired
     private final PasswordEncoder passwordEncoder;
 
     public User registerUser(UserDto userDto) {

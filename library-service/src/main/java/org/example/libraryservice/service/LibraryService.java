@@ -13,7 +13,6 @@ import org.example.libraryservice.model.*;
 import org.example.libraryservice.proxy.BookProxy;
 import org.example.libraryservice.proxy.UserProxy;
 import org.example.libraryservice.repository.LoanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
@@ -23,14 +22,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class LibraryService {
-	
-	@Autowired
+
     private final BookProxy bookProxy;
-	@Autowired
     private final UserProxy userProxy;
-	@Autowired
     private final LoanRepository loanRepository;
-	@Autowired
     private final Clock clock;
 
     public List<BookDto> getAllBooks() {

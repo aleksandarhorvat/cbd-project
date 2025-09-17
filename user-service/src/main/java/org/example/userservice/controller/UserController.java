@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.userservice.model.User;
 import org.example.userservice.dto.UserDto;
 import org.example.userservice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +16,7 @@ import org.example.userservice.dto.LoginRequest;
 @RequestMapping("/users")
 @Validated
 public class UserController {
-	
-	@Autowired
+
     private final UserService userService;
 
     @PostMapping("/register")

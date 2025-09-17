@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.libraryservice.dto.BookDto;
 import org.example.libraryservice.model.Loan;
 import org.example.libraryservice.service.LibraryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,7 @@ import java.util.List;
 @RequestMapping("/library")
 @Validated
 public class LibraryController {
-	
-	@Autowired
+
     private final LibraryService libraryService;
 
     @GetMapping("/books")
